@@ -1,29 +1,48 @@
 import './App.css';
-import {useState} from "react"; //use state to bardzo fajny reaktywny feature, pozwala na reuzywanie czegos, co istnieje juz gdzies w innym miejscu systemu
+import { useState } from "react";
 
 function App() {
-
     const [email, setEmail] = useState('fracz@agh.edu.pl');
-    function handleChange(event) {
-        setEmail(event.target.value);
+    const [username, setUsername] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loggedInAs, setLoggedInAs] = useState(null);
+
+
+    function handleUsernameChange(event) {
+        setUsername(event.target.value);
     }
 
-    let message;
-    if (email.length < 10) {
-        message = <div>Ale masz krótki adres!</div>;
-    } else if (email.length < 15) {
-        message = <div>Twój adres e-mail jest w sam raz.</div>;
-    } else {
-        message = <div>Twój adres e-mail jest stanowczo za długi.</div>;
+    function handleLogin() {
+        setIsLoggedIn(true);
+
     }
+
+        function handleLogout() {
+            setIsLoggedIn(false);
+            setUsername('');
+        }
 
 
     return (
         <div>
-            <h1>System do zapisów na zajęcia</h1>
-            <h2>Twój e-mail to {email}</h2>
-           <div>{message}</div>
-            <input type="text" value={email} onChange={handleChange}/>
+            <h2>Witaj w systemie do zapisów na zajęcia</h2>
+            {!isLoggedIn ? (
+                <>
+                    <input
+                        type="text"
+                        placeholder="Zaloguj się e-mailem"
+                        value={username}
+                        onChange={handleUsernameChange}
+                    />
+
+                    <button onClick={handleLogin}>Wchodzę</button>
+                </>
+            ) : (
+                <div>
+                <h3>Witaj {username}!</h3>
+                <a href="#" onClick={handleLogout}>Wyloguj</a>
+                </div>
+            )}
         </div>
     );
 }
