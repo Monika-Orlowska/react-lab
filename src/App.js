@@ -1,48 +1,41 @@
 import './App.css';
 import { useState } from "react";
+import "milligram";
 
 function App() {
-    const [email, setEmail] = useState('fracz@agh.edu.pl');
-    const [username, setUsername] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [email, setEmail] = useState('');
     const [loggedInAs, setLoggedInAs] = useState(null);
 
 
-    function handleUsernameChange(event) {
-        setUsername(event.target.value);
+    function handleChange(event) {
+        setEmail(event.target.value);
     }
 
-    function handleLogin() {
-        setIsLoggedIn(true);
-
+    function handleAuthenticate() {
+        setLoggedInAs(email);
+        setEmail('');
     }
 
-        function handleLogout() {
-            setIsLoggedIn(false);
-            setUsername('');
-        }
+    let content;
+
+    if (loggedInAs) {
+        content = <div>
+            <h2>Witaj {loggedInAs}</h2>
+            <a onClick={() => setLoggedInAs(null)}>Wyloguj</a>
+            </div>;
+    } else {
+        content = <div>
+            <input type = "text" onChange={handleChange} value={email}/>
+            <button onClick={handleAuthenticate} >Wchodzę</button>
+        </div>;
+    }
 
 
     return (
         <div>
             <h2>Witaj w systemie do zapisów na zajęcia</h2>
-            {!isLoggedIn ? (
-                <>
-                    <input
-                        type="text"
-                        placeholder="Zaloguj się e-mailem"
-                        value={username}
-                        onChange={handleUsernameChange}
-                    />
-
-                    <button onClick={handleLogin}>Wchodzę</button>
-                </>
-            ) : (
-                <div>
-                <h3>Witaj {username}!</h3>
-                <a href="#" onClick={handleLogout}>Wyloguj</a>
-                </div>
-            )}
+            <h4>Podaj swój adres e-mail:</h4>
+            {content}
         </div>
     );
 }
